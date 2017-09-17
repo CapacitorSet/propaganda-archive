@@ -5,15 +5,17 @@ const walk = require("walk-sync");
 const YAML = require("yamljs");
 
 const hashes = {};
+const unusedHashes = new Set();
 for (const file of walk(path.join(__dirname, "images"), {directories: false})) {
 	const filepath = path.join(__dirname, "images", file);
 	const filecontent = fs.readFileSync(filepath);
 	const filehash = crypto.createHash("md5").update(filecontent).digest("hex");
 	hashes[filehash] = filepath;
+	unusedHashes.add(filehash);
 }
 
 const db = YAML.parse(fs.readFileSync(path.join(__dirname, "db.yaml"), "utf8"));
-console.log(db)
+
 for (const item of db) {
 	let title;
 	if (item.lang) // Note that the lang property is optional
@@ -42,8 +44,12 @@ for (const item of db) {
 		fs.copyFileSync(srcPath, path.join(__dirname, "hugo", "static", hash + path.extname(srcPath)));
 		if (singleItem.loc)
 			buf += `Location: ${singleItem.loc}\n\n`;
+		unusedHashes.delete(hash);
 	}
 
 	fs.writeFileSync(path.join(__dirname, "hugo", "content", "posts", item.title + ".md"), buf);
-	console.log(buf);
 }
+
+console.log("Unused hashes:");
+for (const hash of unusedHashes)
+	console.log(`${hash} @ ${hashes[hash]}`);
