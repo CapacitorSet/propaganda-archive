@@ -1,0 +1,20 @@
+{
+  "name": "propaganda-archive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build.js",
+  "dependencies": {
+    "yamljs": "^0.3.0",
+    "walk-sync": "^0.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CapacitorSet/propaganda-archive.git"
+  },
+  "author": "CapacitorSet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CapacitorSet/propaganda-archive/issues"
+  },
+  "homepage": "https://github.com/CapacitorSet/propaganda-archive#readme"
+}
